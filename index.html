@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Match Challenge </title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap"
+  rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Memory Card Match Challenge</h1>
+    </header>
+    
+    <main class="game-board" id="board">
+        <button class="memory-card" onclick="flipCard(this)" data-icon="🍎">?</button>
+        <button class="memory-card" onclick="flipCard(this)" data-icon="🔑">?</button>
+        <button class="memory-card" onclick="flipCard(this)" data-icon="🌸">?</button>
+        <button class="memory-card" onclick="flipCard(this)" data-icon="🔑">?</button>
+        <button class="memory-card" onclick="flipCard(this)" data-icon="🍎">?</button>
+        <button class="memory-card" onclick="flipCard(this)" data-icon="🍎">?</button>
+    </main>
+
+    <div class="modal-overlay" id="successModal">
+  <div class="modal-content">
+    <div class="check-icon">✓</div>
+    <h2>Well Done!</h2>
+    <p>You found all the matching pairs!</p>
+    
+    <div class="btn-container">
+      <button class="btn btn-secondary" onclick="initGame()">Play Again</button>
+    </div>
+
+    <div class="encouragement-box">
+      💡 <strong>Tip:</strong> Every step you take helps keep your mind active and bright!
+    </div>
+  </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
