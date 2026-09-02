@@ -1,118 +1,237 @@
 body {
-  background-color: #FFF9ED;
+  background-color: #FFF9ED;;
   font-family: "Nunito Sans", sans-serif;
   color: #2E2E2E;
   margin: 0;
-  padding: 1rem;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-h1 {
-  color: #176B5B;
-  text-align: center;
-  font-size: 1.75rem;
+header {
+  width: 100%;
+  max-width: 520px;
+  background-color: #176B5B;
+  color: #FFFFFF;
+  padding: 1.25rem;
+  border-radius: 24px 24px 0 0;
+  border: 2px solid #176B5B;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+header h1{
+  font-size: 1.6rem;
   font-weight: 800;
-  margin: 1.5rem 0;
+  margin: 0;
+  color: #FFFFFF;
 }
 
 .game-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  max-width: 400px; 
-  margin: 0 auto;   
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto; 
 }
 
 /* Card Styling*/
 .memory-card {
   aspect-ratio: 1;
-  background-color: #176B5B;
+  width: 100%;
+  background-color: #176B5B; 
   color: #FFFFFF;
-  border: 3px solid #0D473C;
-  border-radius: 16px;
-  font-size: 2.2rem;
+  border: 4px solid #0D473C;
+  border-radius: 20px;       
+  font-size: 2.8rem;         
   font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(23, 107, 91, 0.25);
+  transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Active Press State*/
+.memory-card:active {
+  transform: scale(0.94);
+}
+
+/* Card Flipped State*/
+.memory-card.flipped {
+  background-color: #FFFFFF;
+  color: #2E2E2E;
+  border-color: #176B5B;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.memory-card.matched {
+  background-color: #F0FDF4; 
+  border-color: #2E8B58;     
+  color: #2E2E2E;
+  box-shadow: 0 2px 6px rgba(46, 139, 88, 0.15);
+}
+
+.memory-card:hover {
+  transform: translateY(-4px); /* Slightly lifts the card */
+  box-shadow: 0 10px 18px rgba(23, 107, 91, 0.3); /* Warm glowing shadow */
+}
+
+/* Ensure matched cards stay steady on hover */
+.memory-card.matched:hover {
+  transform: none;
+  border-color: #2E8B58;
+  box-shadow: 0 2px 6px rgba(46, 139, 88, 0.15);
 }
 
 /* Modal Overlay Background */
 .modal-overlay {
-  display: none; /* Hidden by default */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  display: none; 
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  z-index: 99999 !important;
+}
+
+.modal-card {
+  background-color: #FFF9ED;
+  border: 3px solid #F4B942;
+  border-radius: 24px;
+  padding: 2rem 1.5rem;
+  max-width: 340px;
+  width: 85%;
+  text-align: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* Modal Box */
 .modal-content {
-  background-color: #FFFFFF;
-  padding: 2rem 1.5rem;
+  background-color: #FFF9ED;
+  border: 3px solid #F4B942;
   border-radius: 24px;
+  padding: 2rem 1.5rem;
+  max-width: 340px;
+  width: 85%;
   text-align: center;
-  max-width: 360px;
-  width: 100%;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Big Green Checkmark Circle */
-.check-icon {
-  width: 64px;
-  height: 64px;
-  background-color: #2E8B58;
-  color: #FFFFFF;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.star-badge {
   font-size: 2rem;
-  font-weight: 800;
-  margin: 0 auto 1rem auto;
+  margin-bottom: 0.5rem;
 }
 
 .modal-content h2 {
+  color: #176B5B;
   font-size: 1.6rem;
-  color: #2E2E2E;
-  margin: 0 0 0.5rem 0;
+  margin: 0.5rem 0;
+  font-weight: 800;
 }
 
 .modal-content p {
-  font-size: 1.1rem;
-  color: #555555;
-  margin: 0 0 1.5rem 0;
+  color: #2E2E2E;
+  font-size: 1.05rem;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
 }
 
-/* Action Button */
-.btn {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  font-size: 1.1rem;
-  font-weight: 700;
+.play-again-btn {
+  background-color: #176B5B;
+  color: #FFFFFF;
   border: none;
   border-radius: 25px;
+  padding: 0.85rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
+  box-shadow: 0 4px 10px rgba(23, 107, 91, 0.2);
+  transition: transform 0.2s ease;
 }
 
-.btn-secondary {
+.play-again-btn:active {
+  transform: scale(0.95);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.app-container {
+  width: 100%;
+  max-width: 520px;
+  background-color: #FFF9ED; 
+  border-radius: 0 0 24px 24px;
+  padding: 2rem 1.75rem;
+  border: 2px solid #176B5B;
+  border-top: none;
+  box-shadow: 0 12px 28px rgba(23, 107, 91, 0.12); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.instruction-banner {
+  background-color: #FFF3D6;
+  border: 2px solid #F4B942;
+  color: #2E2E2E;
+  padding: 0.75rem 1rem;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.flip-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  color: #176B5B;
+  font-weight: 800;
+}
+
+/* Accessible Reset Button */
+.restart-btn {
+  margin-top: 1.75rem;
+  background-color: transparent;
+  color: #176B5B;
+  border: 2px solid #176B5B;
+  border-radius: 25px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.restart-btn:hover {
   background-color: #176B5B;
   color: #FFFFFF;
 }
 
-.encouragement-box {
-  background-color: #FFF9ED;
-  border-left: 4px solid #F4B942;
-  padding: 0.75rem;
-  border-radius: 8px;
-  margin-top: 1.25rem;
-  font-size: 0.95rem;
-  color: #555555;
-  text-align: left;
+.restart-btn:active {
+  transform: scale(0.96);
 }
