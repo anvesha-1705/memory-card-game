@@ -1,7 +1,6 @@
-// Global AudioContext variable
 let audioCtx = null;
 
-// Initialize or resume AudioContext safely on the very first user interaction
+// Initialize or resume AudioContext
 function getAudioContext() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -12,14 +11,14 @@ function getAudioContext() {
   return audioCtx;
 }
 
-// Global click/touch listener to unlock audio on strict browsers (like Brave/Safari)
+// Global click/touch listener 
 function unlockAudio() {
   getAudioContext();
 }
 document.addEventListener('click', unlockAudio, { once: true });
 document.addEventListener('touchstart', unlockAudio, { once: true });
 
-// Generic synth tone generator for smooth, instant sounds
+// Generic synth tone generator 
 function playTone(freq, duration, type = 'sine', gainVal = 0.5) {
   try {
     const ctx = getAudioContext();
@@ -46,20 +45,20 @@ function playTone(freq, duration, type = 'sine', gainVal = 0.5) {
 
 // Soft wooden click tone for card flip
 function playFlipSound() {
-  playTone(400, 0.1, 'sine', 0.5);
+  playTone(400, 0.1, 'sine', 1.5);
 }
 
-// Sweet two-note chime for matching pairs (C5 -> E5)
+// Sweet two-note chime for matching pairs 
 function playMatchSound() {
-  playTone(523.25, 0.2, 'sine', 0.45);
-  setTimeout(() => playTone(659.25, 0.3, 'sine', 0.45), 120);
+  playTone(523.25, 0.2, 'sine', 1.5);
+  setTimeout(() => playTone(659.25, 0.3, 'sine', 1.5), 120);
 }
 
 // Adorable three-note victory fanfare (C5 -> E5 -> G5)
 function playWinSound() {
-  playTone(523.25, 0.2, 'triangle', 0.5);
-  setTimeout(() => playTone(659.25, 0.2, 'triangle', 0.5), 150);
-  setTimeout(() => playTone(783.99, 0.4, 'triangle', 0.5), 300);
+  playTone(523.25, 0.2, 'triangle', 1.5);
+  setTimeout(() => playTone(659.25, 0.2, 'triangle', 1.5), 150);
+  setTimeout(() => playTone(783.99, 0.4, 'triangle', 1.5), 300);
 }
 
 // Game State Setup
