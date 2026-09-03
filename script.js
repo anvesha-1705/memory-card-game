@@ -61,9 +61,24 @@ function playWinSound() {
   setTimeout(() => playTone(783.99, 0.4, 'triangle', 1.5), 300);
 }
 
-// Game State Setup
-const icons = ['🍎', '🔑', '🌸'];
-let cardDeck = [...icons, ...icons];
+function showStartScreen() {
+  document.getElementById('gameScreen').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'block';
+}
+
+// Game State Setup — pool of 10 possible icons
+const iconPool = ['🏆', '🌸', '🍎', '👖', '☕', '🥐', '🔑', '🎈', '🍕', '🎧'];
+
+// Difficulty → kitne pairs aur grid columns
+const difficultySettings = {
+  easy:   { pairs: 3, cols: 3 },
+  medium: { pairs: 6, cols: 4 },
+  hard:   { pairs: 8, cols: 4 }
+};
+
+let currentDifficulty = 'easy';
+let icons = [];        // is game ke liye chuni gayi icons
+let cardDeck = [];
 let flippedCards = [];
 let lockBoard = false;
 let matchedPairsCount = 0;
@@ -72,6 +87,13 @@ let flipCount = 0;
 // Fisher-Yates array shuffle
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
+}
+
+function startGame(difficulty) {
+  if (difficulty) currentDifficulty = difficulty;
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display = 'block';
+  initGame();
 }
 
 // Update the move counter text on screen
@@ -86,6 +108,12 @@ function updateCounterDisplay() {
 function initGame() {
   const board = document.getElementById('board');
   const modal = document.getElementById('successModal');
+
+  // Difficulty ke hisaab se random N icons uthao pool mein se
+  const { pairs, cols } = difficultySettings[currentDifficulty];
+  icons = shuffle([...iconPool]).slice(0, pairs);
+  cardDeck = [...icons, ...icons];
+  board.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 
   board.innerHTML = '';
   flippedCards = [];
@@ -170,6 +198,3 @@ function checkMatch() {
     }, 1000);
   }
 }
-
-// Start game when script loads
-initGame();

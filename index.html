@@ -3,47 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Card Match Challenge </title>
+    <title>Memory Card Match Challenge</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link
-  href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap"
-  rel="stylesheet">
-
-<link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Memory Card Match Challenge</h1>
+   <header>
+        <div class="header-inner">
+            <span class="header-icon">🧠</span>
+            <h1>Memory Card Match Challenge</h1>
+        </div>
     </header>
 
-    <div class="app-container">
-    <div class="instruction-banner">
-  Tap two cards to find matching pairs <span id="flip-count" class="flip-badge">| Moves: 0</span>
+    <!-- Start / Instruction Screen -->
+    <div id="startScreen" class="screen-container">
+        <h2 class="title-primary"><strong>What's Match?</strong></h2>
+        <p class="title-secondary">Memory Game 🧠</p>
+
+        <!-- Preview Card Box -->
+        <div class="preview-tray">
+            <div class="mini-card">🏆</div>
+            <div class="mini-card">🌸</div>
+            <div class="mini-card">🍎</div>
+            <div class="mini-card">👖</div>
+            <div class="mini-card">☕</div>
+            <div class="mini-card">🥐</div>
+        </div>
+
+        <div class="info-dark-banner">
+            Tap matching pairs to complete the challenge!
+        </div>
+
+        <!-- Instructions Card -->
+        <div class="instructions-card">
+            <div class="step">
+                <span class="step-num">1</span>
+                <div>
+                    <strong>Look carefully</strong>
+                    <p>Cards will be face down on the tray</p>
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <div>
+                    <strong>Tap to flip</strong>
+                    <p>Reveal two cards at a time to find identical pairs</p>
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <div>
+                    <strong>Match them all</strong>
+                    <p>Clear the tray in as few moves as possible</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Button -->
+        <div class="difficulty-row">
+    <button class="start-btn diff-btn" onclick="startGame('easy')">Easy</button>
+    <button class="start-btn diff-btn" onclick="startGame('medium')">Medium</button>
+    <button class="start-btn diff-btn" onclick="startGame('hard')">Hard</button>
 </div>
-    
-    <main class="game-board" id="board">
-        <button class="memory-card" onclick="flipCard(this)" data-icon="🍎">?</button>
-        <button class="memory-card" onclick="flipCard(this)" data-icon="🔑">?</button>
-        <button class="memory-card" onclick="flipCard(this)" data-icon="🌸">?</button>
-        <button class="memory-card" onclick="flipCard(this)" data-icon="🔑">?</button>
-        <button class="memory-card" onclick="flipCard(this)" data-icon="🍎">?</button>
-        <button class="memory-card" onclick="flipCard(this)" data-icon="🍎">?</button>
-    </main>
-
-    <button class="restart-btn" onclick="initGame()">Restart Game</button>
-  </div>
-
-  <div id="successModal" class="modal-overlay">
-    <div class="modal-card">
-      <div class="star-badge">⭐ ⭐ ⭐</div>
-      <h2>Wonderful Job!</h2>
-      <p>You matched all the pairs perfectly! Your memory is shining bright today.</p>
-      <button class="play-again-btn" onclick="initGame()">Play Again </button>
+        <p class="tagline">Keeps your mind active and sharp 🌟</p>
     </div>
-  </div>
+
+    <!-- Main Game Screen (Hidden initially) -->
+    <div id="gameScreen" class="app-container" style="display: none;">
+        <div class="instruction-banner">
+            Tap two cards to find matching pairs <span id="flip-count" class="flip-badge">| Moves: 0</span>
+        </div>
+        
+        <main class="game-board" id="board"></main>
+
+        <button class="restart-btn" onclick="showStartScreen()">Back to Menu</button>
+    </div>
+
+    <!-- Victory Modal -->
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="star-badge">⭐ ⭐ ⭐</div>
+            <h2>Wonderful Job!</h2>
+            <p>You matched all the pairs perfectly! Your memory is shining bright today.</p>
+            <button class="play-again-btn" onclick="startGame()">Play Again </button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
