@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style2.css" >
+  <title> Phrase Recall Game</title>
+</head>
+
+<body>
+  <div class="game-container">
+    <div class="modal-overlay active" id="start-screen">
+      <div class="modal-content">
+        <h3> 📋Rules</h3>
+        <p style="text-align: left; font-size: 0.95rem; line-height: 1.5;">
+          1. Memorize the phrase before time runs out.<br>
+          2. Select words from the word bank to rebuild the phrase.<br>
+          3. Click a word in the answer zone to remove it.<br>
+          4. Submit your answer to earn points!
+        </p>
+        <div class="score-board">Score: <span id="start-score">0</span></div>
+        <p><strong>Select Difficulty to Start:</strong></p>
+        <div class="difficulty-controls">
+          <button class="action-btn level-btn easy-btn" data-level="easy">Easy (7s)</button>
+          <button class="action-btn level-btn medium-btn" data-level="medium">Medium (5s)</button>
+          <button class="action-btn level-btn hard-btn" data-level="hard">Hard (3s)</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-bar"><h2> 💡Memory Recall Challenge</h2></div>
+    <div class="score-board">Score: <span id="game-score">0</span></div>
+    <div class="timer" id="timer">Memorize: 5s</div>
+    
+    <div class="display-box" id="phrase-display">Ready?</div>
+
+    <div class="answer-zone" id="answer-zone"></div>
+
+    <div class="word-bank" id="word-bank"></div>
+
+    <div class="controls">
+      <button class="action-btn submit-btn" id="submit-btn" disabled> ✅Submit Answer</button>
+      <button class="action-btn reset-btn" id="reset-btn"> 🖌️Clear Selection</button>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal-content">
+        <h3 id="modal-title">Result</h3>
+        <p id="modal-message"></p>
+        <button class="action-btn submit-btn" id="modal-close-btn"> 🌟Next Level</button>
+      </div>
+    </div>
+  </div>
+  <script src="script2.js "></script>
+</body>
+</html>
