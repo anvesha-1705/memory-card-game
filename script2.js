@@ -38,6 +38,7 @@ const phrases = [
 
     levelButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => {
+        playClickSound();
         const level = e.target.getAttribute("data-level");
         setDifficulty(level);
         startScreen.classList.remove("active");
@@ -66,6 +67,7 @@ const phrases = [
     }
 
     modalCloseBtn.addEventListener("click", () => {
+      playClickSound();
       modalOverlay.classList.remove("active");
       startGame();
     });
@@ -107,7 +109,11 @@ const phrases = [
         const btn = document.createElement("button");
         btn.className = "word-btn";
         btn.innerText = word;
-        btn.onclick = () => moveToAnswer(btn, word);
+        btn.onclick = () =>{ 
+          playClickSound();
+          moveToAnswer(btn, word);
+
+        }
         wordBank.appendChild(btn);
       });
 
@@ -137,13 +143,16 @@ const phrases = [
         score += 10;
         gameScoreDisplay.innerText = score;
         startScoreDisplay.innerText = score;
+        playWinSound();
         showModal("Success!", "Correct! You earned 10 points!");
       } else {
+        playLoseSound();
         showModal("Try Again", "Incorrect answer. Move to next level !");
       }
     });
 
     resetBtn.addEventListener("click", () => {
+      playClickSound();
       // Move all words back to word bank
       const buttons = Array.from(answerZone.children);
       buttons.forEach(btn => {
@@ -151,3 +160,38 @@ const phrases = [
         moveToBank(btn, word);
       });
     });
+
+    // Web Audio API Context for generating sound effects
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playBeep(freq, type, duration) {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    // Sound effect triggers
+    function playClickSound() {
+      playBeep(400, "sine", 0.05);
+    }
+
+    function playWinSound() {
+      setTimeout(() => playBeep(523.25, "triangle", 0.15), 0);   // C5
+      setTimeout(() => playBeep(659.25, "triangle", 0.15), 150); // E5
+      setTimeout(() => playBeep(783.99, "triangle", 0.3), 300);  // G5
+    }
+
+    function playLoseSound() {
+      setTimeout(() => playBeep(300, "sawtooth", 0.2), 0);
+      setTimeout(() => playBeep(220, "sawtooth", 0.4), 200);
+    }
