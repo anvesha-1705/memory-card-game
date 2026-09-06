@@ -81,19 +81,56 @@ let icons = [];        // is game ke liye chuni gayi icons
 let cardDeck = [];
 let flippedCards = [];
 let lockBoard = false;
-let matchedPairsCount = 0;
+let mat;
 let flipCount = 0;
+let patientId = 1;
+let gameSessionId = null;
+let gameStartTime = null;
+let mistakes = 0;
 
 // Fisher-Yates array shuffle
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
 
-function startGame(difficulty) {
-  if (difficulty) currentDifficulty = difficulty;
-  document.getElementById('startScreen').style.display = 'none';
-  document.getElementById('gameScreen').style.display = 'block';
-  initGame();
+async function startGame(difficulty) {
+  if (difficulty) {
+    currentDifficulty = difficulty;
+  }
+
+  try {
+    const response = await fetch('http://127.0.0.1:5000/api/game/start', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        patient_id: patientId,
+        game_type: 'memory_card',
+        difficulty: currentDifficulty
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.error || 'Unable to start game');
+      return;
+    }
+
+    gameSessionId = data.session_id;
+
+    console.log('Game session started:', gameSessionId);
+
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('gameScreen').style.display = 'block';
+
+    initGame();
+
+  } catch (error) {
+    console.error('Error starting game:', error);
+    alert('Could not connect to the game server.');
+  }
 }
 
 // Update the move counter text on screen
@@ -119,6 +156,11 @@ function initGame() {
   flippedCards = [];
   lockBoard = false;
   matchedPairsCount = 0;
+  flipCount = 0;
+  mistakes = 0;
+  gameStartTime = Date.now();
+
+updateCounterDisplay();
   flipCount = 0;
 
   updateCounterDisplay();
@@ -164,9 +206,62 @@ function flipCard(card) {
   }
 }
 
+async function completeGame() {
+  const timeTaken = (Date.now() - gameStartTime) / 1000;
+
+  const moves = flipCount / 2;
+
+  const accuracy = moves > 0
+    ? ((moves - mistakes) / moves) * 100
+    : 0;
+
+  const score = Math.max(
+    0,
+    Math.round(1000 - (mistakes * 100) - (timeTaken * 5))
+  );
+
+  const gameResults = {
+    session_id: gameSessionId,
+    moves: moves,
+    time_taken: Number(timeTaken.toFixed(2)),
+    mistakes: mistakes,
+    score: score,
+    accuracy: Number(accuracy.toFixed(2)),
+    completed: 1
+  };
+
+  console.log("Game results:", gameResults);
+
+  try {
+    const response = await fetch('http://127.0.0.1:5000/api/game/complete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(gameResults)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Failed to save game:", data);
+      return;
+    }
+
+    console.log("Game saved successfully:", data);
+
+  } catch (error) {
+    console.error("Error saving game:", error);
+  }
+}
+
 // Validate matching pairs
 function checkMatch() {
   lockBoard = true;
+
+  // Two cards have been attempted → count one move
+  const moves = flipCount / 2;
+
   const [card1, card2] = flippedCards;
   const isMatch = card1.getAttribute('data-icon') === card2.getAttribute('data-icon');
 
@@ -179,8 +274,10 @@ function checkMatch() {
     matchedPairsCount++;
 
     if (matchedPairsCount === icons.length) {
-      setTimeout(() => {
+        setTimeout(async () => {
         playWinSound();
+        await completeGame();
+
         const modal = document.getElementById('successModal');
         if (modal) {
           modal.style.display = 'flex';
@@ -188,6 +285,8 @@ function checkMatch() {
       }, 500);
     }
   } else {
+    mistakes++;
+
     setTimeout(() => {
       card1.classList.remove('flipped');
       card1.textContent = '?';

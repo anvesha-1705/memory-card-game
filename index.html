@@ -64,10 +64,12 @@
 
         <!-- Start Button -->
         <div class="difficulty-row">
-    <button class="start-btn diff-btn" onclick="startGame('easy')">Easy</button>
-    <button class="start-btn diff-btn" onclick="startGame('medium')">Medium</button>
-    <button class="start-btn diff-btn" onclick="startGame('hard')">Hard</button>
-</div>
+       <button type="button" class="start-btn diff-btn" onclick="startGame('easy')">Easy</button>
+
+       <button type="button" class="start-btn diff-btn" onclick="startGame('medium')">Medium</button>
+
+       <button type="button" class="start-btn diff-btn" onclick="startGame('hard')">Hard</button>
+    </div>
         <p class="tagline">Keeps your mind active and sharp 🌟</p>
     </div>
 
@@ -79,7 +81,7 @@
         
         <main class="game-board" id="board"></main>
 
-        <button class="restart-btn" onclick="showStartScreen()">Back to Menu</button>
+        <button type="button" class="restart-btn" onclick="showStartScreen()">Back to Menu</button>
     </div>
 
     <!-- Victory Modal -->
@@ -88,7 +90,7 @@
             <div class="star-badge">⭐ ⭐ ⭐</div>
             <h2>Wonderful Job!</h2>
             <p>You matched all the pairs perfectly! Your memory is shining bright today.</p>
-            <button class="play-again-btn" onclick="startGame()">Play Again </button>
+            <button type="button" class="play-again-btn" onclick="startGame()">Play Again</button>
         </div>
     </div>
 
